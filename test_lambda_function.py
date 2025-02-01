@@ -15,6 +15,7 @@ def test_lambda_handler_success(mocker):
     mocker.patch('pymysql.connect')
     mock_connection = mocker.Mock()
     mock_cursor = mocker.Mock()
+    mock_cursor.__enter__.return_value = mock_cursor
     mock_cursor.fetchone.return_value = (1000.00, 'base64string')
     mock_connection.cursor.return_value = mock_cursor
     pymysql.connect.return_value = mock_connection
@@ -39,6 +40,7 @@ def test_lambda_handler_no_record(mocker):
     mocker.patch('pymysql.connect')
     mock_connection = mocker.Mock()
     mock_cursor = mocker.Mock()
+    mock_cursor.__enter__.return_value = mock_cursor
     mock_cursor.fetchone.return_value = None
     mock_connection.cursor.return_value = mock_cursor
     pymysql.connect.return_value = mock_connection
