@@ -20,6 +20,7 @@ def test_lambda_handler_success(mocker):
     pymysql.connect.return_value = mock_connection
 
     response = lambda_handler(event, None)
+    print(response)  # Adicione este log para capturar a resposta
     body = json.loads(response['body'])
 
     assert response['statusCode'] == 200
@@ -43,6 +44,7 @@ def test_lambda_handler_no_record(mocker):
     pymysql.connect.return_value = mock_connection
 
     response = lambda_handler(event, None)
+    print(response)  # Adicione este log para capturar a resposta
     body = json.loads(response['body'])
 
     assert response['statusCode'] == 404
@@ -56,6 +58,7 @@ def test_lambda_handler_missing_parameters():
     }
 
     response = lambda_handler(event, None)
+    print(response)  # Adicione este log para capturar a resposta
     body = json.loads(response['body'])
 
     assert response['statusCode'] == 400

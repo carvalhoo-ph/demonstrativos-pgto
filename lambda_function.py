@@ -49,6 +49,7 @@ def lambda_handler(event, context):
                     'body': json.dumps('Registro não encontrado')
                 }
     except Exception as e:
+        print(f'Erro no servidor: {str(e)}')  # Adicione este log para capturar a exceção
         return {
             'statusCode': 500,
             'body': json.dumps(f'Erro no servidor: {str(e)}')
