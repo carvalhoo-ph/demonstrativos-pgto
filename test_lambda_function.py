@@ -52,7 +52,7 @@ def test_lambda_handler_no_record(mocker):
     body = json.loads(response['body'])
 
     assert response['statusCode'] == 404
-    assert body == 'Registro não encontrado '
+    assert body == 'Registro não encontrado'
 
 def test_lambda_handler_missing_parameters():
     event = {
