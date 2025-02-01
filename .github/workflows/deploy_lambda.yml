@@ -55,6 +55,13 @@ jobs:
             sleep 10
           done
 
+      - name: Wait for Lambda function to be active
+        run: |
+          while [[ $(aws lambda get-function --function-name demonstrativo-pgto --query 'Configuration.State') != '"Active"' ]]; do
+            echo "Waiting for Lambda function to be active..."
+            sleep 10
+          done
+
       - name: Test Lambda function
         run: |
           aws lambda invoke --function-name demonstrativo-pgto --payload '{}' response.json
