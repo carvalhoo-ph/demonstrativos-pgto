@@ -1,25 +1,25 @@
 import json
 import pytest
-import pymysql
+import psycopg2
 from lambda_function import lambda_handler
 
 def test_lambda_handler_success(mocker):
     event = {
         'queryStringParameters': {
             'cpf': '12345678900',
-            'ANO': '2023',
-            'MES': '10'
+            'ano': '2023',
+            'mes': '10'
         }
     }
     
-    mocker.patch('pymysql.connect')
+    mocker.patch('psycopg2.connect')
     mock_connection = mocker.Mock()
     mock_cursor = mocker.Mock()
     mock_cursor.__enter__ = mocker.Mock(return_value=mock_cursor)
     mock_cursor.__exit__ = mocker.Mock(return_value=None)
     mock_cursor.fetchone.return_value = (1000.00, 'base64string')
     mock_connection.cursor.return_value = mock_cursor
-    pymysql.connect.return_value = mock_connection
+    psycopg2.connect.return_value = mock_connection
 
     response = lambda_handler(event, None)
     print(response)  # Adicione este log para capturar a resposta
@@ -33,19 +33,19 @@ def test_lambda_handler_no_record(mocker):
     event = {
         'queryStringParameters': {
             'cpf': '12345678900',
-            'ANO': '2023',
-            'MES': '10'
+            'ano': '2023',
+            'mes': '10'
         }
     }
     
-    mocker.patch('pymysql.connect')
+    mocker.patch('psycopg2.connect')
     mock_connection = mocker.Mock()
     mock_cursor = mocker.Mock()
     mock_cursor.__enter__ = mocker.Mock(return_value=mock_cursor)
     mock_cursor.__exit__ = mocker.Mock(return_value=None)
     mock_cursor.fetchone.return_value = None
     mock_connection.cursor.return_value = mock_cursor
-    pymysql.connect.return_value = mock_connection
+    psycopg2.connect.return_value = mock_connection
 
     response = lambda_handler(event, None)
     print(response)  # Adicione este log para capturar a resposta

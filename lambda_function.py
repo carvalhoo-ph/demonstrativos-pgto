@@ -1,13 +1,17 @@
 import json
-import pymysql
+import psycopg2
 import os
 import config
 
 def lambda_handler(event, context):
     # Obter o CPF, ANO e MES dos parâmetros de consulta
     cpf = event.get('queryStringParameters', {}).get('cpf')
-    ano = event.get('queryStringParameters', {}).get('ANO')
-    mes = event.get('queryStringParameters', {}).get('MES')
+    ano = event.get('queryStringParameters', {}).get('ano')
+    mes = event.get('queryStringParameters', {}).get('mes')
+    
+    print(f"CPF: {cpf}")
+    print(f"ANO: {ano}")
+    print(f"MES: {mes}")
     
     if not cpf or not ano or not mes:
         return {
@@ -16,13 +20,16 @@ def lambda_handler(event, context):
         }
 
     try:
+        print(f"Tentando conectar ao banco de dados: {config.rds_host}")
         # Conexão com o banco de dados
-        connection = pymysql.connect(
+        connection = psycopg2.connect(
             host=config.rds_host,
             user=config.db_username,
             password=config.db_password,
-            db=config.db_name
+            dbname=config.db_name,
+            connect_timeout=10  # Adicione um timeout para a conexão
         )
+        print("Conexão com o banco de dados bem-sucedida")
 
         with connection.cursor() as cursor:
             # Buscar os dados na tabela demonstrativos_pagamento
