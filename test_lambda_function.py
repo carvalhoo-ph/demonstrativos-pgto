@@ -66,4 +66,4 @@ def test_lambda_handler_missing_parameters():
     body = json.loads(response['body'])
 
     assert response['statusCode'] == 400
-    assert body == 'CPF, ANO ou MES não fornecido'
+    assert body == 'CPF, ANO ou MES não fornecido '
